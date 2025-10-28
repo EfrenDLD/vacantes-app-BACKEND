@@ -6,7 +6,7 @@ Este servicio maneja la lógica de negocio, persistencia de datos y exposiciones
 ---
 
 ## Tecnologías
-```
+
 - **Java 17**  
 - **Spring Boot 3.x**  
 - **Spring Web (REST APIs)**  
@@ -14,7 +14,6 @@ Este servicio maneja la lógica de negocio, persistencia de datos y exposiciones
 - **Base de datos:** H2 (desarrollo) / MySQL o PostgreSQL (producción)  
 - **Maven** para gestión de dependencias  
 - **Lombok** para reducir boilerplate  
-```
 
 ## Estructura del proyecto
 ```
@@ -34,3 +33,4 @@ vacantes-app-backend/
 └─ pom.xml # Dependencias y configuración de Maven
 yaml
 ```
+
