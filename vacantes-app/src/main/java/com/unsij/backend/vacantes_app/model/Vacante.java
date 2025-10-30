@@ -28,6 +28,9 @@ public class Vacante {
     @Column(name = "detalle", columnDefinition = "TEXT")
     private String detalle;
 
+    @Column(name = "activo")
+    private Boolean activo;
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
