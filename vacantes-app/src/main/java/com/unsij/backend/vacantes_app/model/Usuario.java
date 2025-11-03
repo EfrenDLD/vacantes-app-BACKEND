@@ -31,7 +31,7 @@ public class Usuario {
 
     @NotBlank
     @Column(nullable = false)
-    private String password; 
+    private String contrasenia; 
 
     @NotBlank
     @Column(nullable = false)
