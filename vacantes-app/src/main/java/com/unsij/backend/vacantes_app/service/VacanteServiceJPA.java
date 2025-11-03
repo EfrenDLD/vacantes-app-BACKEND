@@ -7,7 +7,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.unsij.backend.vacantes_app.model.Usuario;
 import com.unsij.backend.vacantes_app.model.Vacante;
+import com.unsij.backend.vacantes_app.repository.UsuarioRepository;
 import com.unsij.backend.vacantes_app.repository.VacanteRepository;
 import com.unsij.backend.vacantes_app.service.interfaces.IVacanteService;
 import com.unsij.backend.vacantes_app.utils.JsonUtils;
@@ -18,6 +20,9 @@ import jakarta.transaction.Transactional;
 public class VacanteServiceJPA implements IVacanteService {
     @Autowired
     private VacanteRepository vacanteRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Override
     public List<Vacante> findAll() {
@@ -60,25 +65,34 @@ public class VacanteServiceJPA implements IVacanteService {
     @Override
     public Vacante build(Map<String, Object> params, Vacante vacante) throws IllegalArgumentException {
         try {
-            
-            LocalDate fechaPublicacion = JsonUtils.obtLocalDate(params,"fechaPublicacion");
-            if(fechaPublicacion == null) throw new IllegalArgumentException("La fecha de publicacion es obligatoria");
+            System.out.println("Datos Front: " + params);
+            LocalDate fechaPublicacion = JsonUtils.obtLocalDate(params, "fechaPublicacion");
+            if (fechaPublicacion == null)
+                throw new IllegalArgumentException("La fecha de publicacion es obligatoria");
             vacante.setFechaPublicacion(fechaPublicacion);
-           
+
             String nombre = JsonUtils.obtString((params), "nombre");
-            if(nombre == null) throw new IllegalArgumentException("El nombre de la vacante es obligatorio");
+            if (nombre == null)
+                throw new IllegalArgumentException("El nombre de la vacante es obligatorio");
             vacante.setNombre(nombre);
 
             String descripcion = JsonUtils.obtString(params, "descripcion");
-            if(descripcion == null) throw new IllegalArgumentException("La descripcion es obligatoria");
+            if (descripcion == null)
+                throw new IllegalArgumentException("La descripcion es obligatoria");
+            vacante.setDescripcion(descripcion);
 
             String detalle = JsonUtils.obtString(params, "detalle");
-            if(detalle == null) throw new IllegalArgumentException("Los detalles son obligatorios");
+            if (detalle == null)
+                throw new IllegalArgumentException("Los detalles son obligatorios");
             vacante.setDetalle(detalle);
 
             Boolean activo = JsonUtils.obtBoolean(params, "activo");
-            if(activo == null) throw new IllegalArgumentException("El activo es obligatorio");
+            if (activo == null)
+                throw new IllegalArgumentException("El activo es obligatorio");
             vacante.setActivo(activo);
+
+            Usuario usuario = usuarioRepository.findById(1L).orElse(null); // ID de prueba
+            vacante.setUsuario(usuario);
 
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(e.getMessage());
@@ -100,5 +114,5 @@ public class VacanteServiceJPA implements IVacanteService {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteById'");
     }
-   
+
 }

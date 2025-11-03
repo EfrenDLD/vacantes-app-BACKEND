@@ -26,7 +26,7 @@ public class VacanteController {
             return ResponseEntity.status(HttpStatus.CREATED).body(vacante);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
+        }  catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: CREATE");
         }
     }
