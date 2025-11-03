@@ -97,8 +97,10 @@ public class VacanteServiceJPA implements IVacanteService {
 
     @Override
     public void deleteById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteById'");
+        Vacante vacante = this.findById(id);
+        if(vacante != null){
+            vacanteRepository.deleteById(id);
+        }
     }
    
 }
