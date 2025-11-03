@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Data
 @Entity
 @Table(name = "usuario")
@@ -31,17 +33,20 @@ public class Usuario {
 
     @NotBlank
     @Column(nullable = false)
-    private String contrasenia; 
+    private String contrasenia;
 
     @NotBlank
     @Column(nullable = false)
-    private String perfil; 
+    private String perfil;
 
     @NotBlank
     @Column(nullable = false)
-    private String estatus; 
+    private String estatus;
 
     // Relacion con Vacante
+    // Relacion con Vacante
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("usuario") 
     private List<Vacante> vacantes;
+
 }

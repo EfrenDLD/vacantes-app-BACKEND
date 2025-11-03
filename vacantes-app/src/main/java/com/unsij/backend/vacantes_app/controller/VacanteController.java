@@ -30,7 +30,7 @@ public class VacanteController {
             return ResponseEntity.status(HttpStatus.CREATED).body(vacante);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
-        }  catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: CREATE");
         }
     }
@@ -51,13 +51,11 @@ public class VacanteController {
     public ResponseEntity<?> getAll() {
         try {
             List<Vacante> vacantes = vacanteServiceJPA.getAll();
-            if (vacantes.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("No hay vacantes registradas.");
-            }
-            return ResponseEntity.ok(vacantes);
+            return ResponseEntity.ok(vacantes); // siempre devuelve lista, vacía o con datos
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error interno del servidor: GET ALL");
         }
     }
+
 }

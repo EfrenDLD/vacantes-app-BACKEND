@@ -26,8 +26,7 @@ public class VacanteServiceJPA implements IVacanteService {
 
     @Override
     public List<Vacante> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        return vacanteRepository.findAll();
     }
 
     @Override
@@ -36,9 +35,8 @@ public class VacanteServiceJPA implements IVacanteService {
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
 
-    
     public List<Vacante> getAll() {
-        return this.findAll();
+        return vacanteRepository.findAll(); // ✅ Corregido
     }
 
     @Override
@@ -117,7 +115,7 @@ public class VacanteServiceJPA implements IVacanteService {
     @Override
     public void deleteById(Long id) {
         Vacante vacante = this.findById(id);
-        if(vacante != null){
+        if (vacante != null) {
             vacanteRepository.deleteById(id);
         }
     }
