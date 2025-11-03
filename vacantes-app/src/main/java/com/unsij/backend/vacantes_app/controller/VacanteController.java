@@ -5,10 +5,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.unsij.backend.vacantes_app.model.Vacante;
 import com.unsij.backend.vacantes_app.service.VacanteServiceJPA;
@@ -28,6 +25,18 @@ public class VacanteController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }  catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: CREATE");
+        }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> delete(@RequestParam Long id) {
+        try {
+            vacanteServiceJPA.deleteById(id);
+            return ResponseEntity.ok().body("Vacante eliminada correctamente");
+        } catch (IllegalArgumentException e) {
+          return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: DELETE");
         }
     }
 }
