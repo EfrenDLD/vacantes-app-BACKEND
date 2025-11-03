@@ -31,6 +31,11 @@ public class VacanteServiceJPA implements IVacanteService {
         throw new UnsupportedOperationException("Unimplemented method 'findById'");
     }
 
+    
+    public List<Vacante> getAll() {
+        return this.findAll();
+    }
+
     @Override
     @Transactional
     public Vacante save(Vacante vacante) throws Exception {
