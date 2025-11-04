@@ -1,5 +1,8 @@
 package com.unsij.backend.vacantes_app.model;
 import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -34,5 +37,6 @@ public class Vacante {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "id_usuario", nullable = false)
+    @JsonIgnoreProperties("vacantes")
     private Usuario usuario;
 }
