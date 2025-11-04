@@ -91,7 +91,8 @@ public class VacanteServiceJPA implements IVacanteService {
                 throw new IllegalArgumentException("El activo es obligatorio");
             vacante.setActivo(activo);
 
-            Usuario usuario = usuarioRepository.findById(1L).orElse(null); // ID de prueba
+            String idUsuario = JsonUtils.obtString((params), "usuario");
+            Usuario usuario = usuarioRepository.findById(Long.parseLong(idUsuario)).orElse(null);
             vacante.setUsuario(usuario);
 
         } catch (IllegalArgumentException e) {
