@@ -15,25 +15,31 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public LoginResponseDTO login(LoginRequestDTO loginRequest) {
+    public Optional<LoginResponseDTO> login(LoginRequestDTO loginRequest) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(loginRequest.getUsername());
-
-        LoginResponseDTO response = new LoginResponseDTO();
 
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
-            // Validamos la contraseña (en producción usar hash y no texto plano)
-            if (usuario.getPassword().equals(loginRequest.getPassword())) {
-                response.setMensaje("Login exitoso");
-                response.setUsername(usuario.getUsername());
-                response.setPerfil(usuario.getPerfil());
-            } else {
-                response.setMensaje("Contraseña incorrecta");
+
+            // Validar contraseña
+            if (!usuario.getPassword().equals(loginRequest.getPassword())) {
+                return Optional.empty();
             }
-        } else {
-            response.setMensaje("Usuario no encontrado");
+
+            // Validar que el usuario sea administrador
+            if (!"ADMIN".equalsIgnoreCase(usuario.getPerfil())) { // Cambia "ADMIN" si tu valor es distinto
+                return Optional.empty();
+            }
+
+            // Armar respuesta
+            LoginResponseDTO response = new LoginResponseDTO();
+            response.setMensaje("Login exitoso");
+            response.setUsername(usuario.getUsername());
+            response.setPerfil(usuario.getPerfil());
+            return Optional.of(response);
         }
 
-        return response;
+        // Usuario no encontrado
+        return Optional.empty();
     }
 }
