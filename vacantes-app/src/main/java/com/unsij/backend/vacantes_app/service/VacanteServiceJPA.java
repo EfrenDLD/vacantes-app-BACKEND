@@ -31,8 +31,7 @@ public class VacanteServiceJPA implements IVacanteService {
 
     @Override
     public Vacante findById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+        return vacanteRepository.findById(id).orElse(null);
     }
 
     public List<Vacante> getAll() {
@@ -94,7 +93,8 @@ public class VacanteServiceJPA implements IVacanteService {
                 throw new IllegalArgumentException("El activo es obligatorio");
             vacante.setActivo(activo);
 
-            Usuario usuario = usuarioRepository.findById(1L).orElse(null); // ID de prueba
+            String idUsuario = JsonUtils.obtString((params), "usuario");
+            Usuario usuario = usuarioRepository.findById(Long.parseLong(idUsuario)).orElse(null);
             vacante.setUsuario(usuario);
 
         } catch (IllegalArgumentException e) {
@@ -126,6 +126,25 @@ public class VacanteServiceJPA implements IVacanteService {
 
         vacante.setActivo(activo);
         return vacanteRepository.save(vacante);
+    }
+
+    // METODOS DE BUSQUEDA
+    /**
+     * Buscar vacantes por palabra clave
+     * busqueda parcial en nombre, descripción y detalle
+     */
+    public List<Vacante> buscarPorPalabraClave(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return vacanteRepository.findAllActivas();
+        }
+        return vacanteRepository.buscarPorPalabraClave(keyword.trim());
+    }
+
+    /**
+     * Obtener todas las vacantes activas
+    */
+    public List<Vacante> obtenerVacantesActivas() {
+        return vacanteRepository.findAllActivas();
     }
 
 }

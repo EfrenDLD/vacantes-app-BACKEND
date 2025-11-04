@@ -46,7 +46,7 @@ public class Usuario {
     // Relacion con Vacante
     // Relacion con Vacante
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("usuario") 
+    @JsonIgnoreProperties("usuario")
     private List<Vacante> vacantes;
 
 }
