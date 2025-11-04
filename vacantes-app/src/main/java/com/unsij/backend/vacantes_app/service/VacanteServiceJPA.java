@@ -120,4 +120,12 @@ public class VacanteServiceJPA implements IVacanteService {
         }
     }
 
+    public Vacante cambiarEstado(Long id, boolean activo) {
+        Vacante vacante = vacanteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró la vacante con ID: " + id));
+
+        vacante.setActivo(activo);
+        return vacanteRepository.save(vacante);
+    }
+
 }
