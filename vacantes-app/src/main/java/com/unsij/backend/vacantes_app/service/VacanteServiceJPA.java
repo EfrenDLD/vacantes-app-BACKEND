@@ -26,14 +26,12 @@ public class VacanteServiceJPA implements IVacanteService {
 
     @Override
     public List<Vacante> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        return vacanteRepository.findAll();
     }
 
     @Override
     public Vacante findById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+        return vacanteRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -113,9 +111,28 @@ public class VacanteServiceJPA implements IVacanteService {
     @Override
     public void deleteById(Long id) {
         Vacante vacante = this.findById(id);
-        if(vacante != null){
+        if (vacante != null) {
             vacanteRepository.deleteById(id);
         }
+    }
+
+    // METODOS DE BUSQUEDA
+    /**
+     * Buscar vacantes por palabra clave
+     * busqueda parcial en nombre, descripción y detalle
+     */
+    public List<Vacante> buscarPorPalabraClave(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return vacanteRepository.findAllActivas();
+        }
+        return vacanteRepository.buscarPorPalabraClave(keyword.trim());
+    }
+
+    /**
+     * Obtener todas las vacantes activas
+    */
+    public List<Vacante> obtenerVacantesActivas() {
+        return vacanteRepository.findAllActivas();
     }
 
 }
