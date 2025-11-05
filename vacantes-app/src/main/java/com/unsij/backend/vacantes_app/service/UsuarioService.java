@@ -22,7 +22,7 @@ public class UsuarioService {
             Usuario usuario = usuarioOpt.get();
 
             // Validar contraseña
-            if (!usuario.getPassword().equals(loginRequest.getPassword())) {
+            if (!usuario.getContrasenia().equals(loginRequest.getPassword())) {
                 return Optional.empty();
             }
 
