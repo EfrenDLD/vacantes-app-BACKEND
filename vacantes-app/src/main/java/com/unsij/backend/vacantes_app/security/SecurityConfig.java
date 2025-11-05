@@ -17,7 +17,7 @@ public class SecurityConfig {
                 }) // Habilitar CORS
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 ); // Si estás usando básico
 
         return http.build();
