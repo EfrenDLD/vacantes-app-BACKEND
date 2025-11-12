@@ -41,6 +41,25 @@ public class VacanteController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Map<String, Object> params) {
+        try {
+            System.out.println("➡️ ID recibido: " + id);
+            System.out.println("➡️ Params: " + params);
+            System.out.println("➡️ findById(" + id + ")");
+            Vacante v = vacanteServiceJPA.findById(id);
+            System.out.println("➡️ Vacante encontrada: " + v);
+            Vacante vacanteUpdated = vacanteServiceJPA.update(v, params);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(vacanteUpdated);
+        } catch (IllegalArgumentException e) {
+            System.out.println("❌ ERROR UPDATE: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: UPDATE");
+        }
+    }
+
     // LOGICA DE BUSQUEDA DE VACANTES
     /**
      * Obtener todas las vacantes

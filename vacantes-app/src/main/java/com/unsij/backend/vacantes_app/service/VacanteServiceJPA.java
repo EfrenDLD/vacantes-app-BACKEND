@@ -31,7 +31,8 @@ public class VacanteServiceJPA implements IVacanteService {
 
     @Override
     public Vacante findById(Long id) {
-        return vacanteRepository.findById(id).orElse(null);
+        return vacanteRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("Vacante no encontrado con el ID: " + id));
     }
 
     @Override
@@ -56,14 +57,20 @@ public class VacanteServiceJPA implements IVacanteService {
 
     @Override
     public Vacante update(Vacante vacante, Map<String, Object> params) throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        try {
+            this.build(params, vacante);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("Error al construir el ejemplo");
+        }
+        return this.save(vacante);
     }
 
     @Override
     public Vacante build(Map<String, Object> params, Vacante vacante) throws IllegalArgumentException {
         try {
-            System.out.println("Datos Front: " + params);
             LocalDate fechaPublicacion = JsonUtils.obtLocalDate(params, "fechaPublicacion");
             if (fechaPublicacion == null)
                 throw new IllegalArgumentException("La fecha de publicacion es obligatoria");
@@ -96,7 +103,7 @@ public class VacanteServiceJPA implements IVacanteService {
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException(e.getMessage());
         } catch (Exception e) {
-            e.printStackTrace(); // esto es opcional sirve para depuracion si ocurre algun error inesperado
+            e.printStackTrace();
             throw new IllegalArgumentException("Error al construir el ejemplo");
         }
         return vacante;
@@ -130,7 +137,7 @@ public class VacanteServiceJPA implements IVacanteService {
 
     /**
      * Obtener todas las vacantes activas
-    */
+     */
     public List<Vacante> obtenerVacantesActivas() {
         return vacanteRepository.findAllActivas();
     }

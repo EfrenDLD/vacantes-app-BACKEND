@@ -13,10 +13,9 @@ public class CorsConfig {
 
     @Bean
     public CorsFilter corsFilter() {
-        System.out.println("✅ CORS configurado correctamente");
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(false);
-        config.setAllowedOrigins(List.of("http://localhost:5173")); // origen de tu frontend
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
         config.setExposedHeaders(List.of("*"));
