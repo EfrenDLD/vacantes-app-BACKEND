@@ -35,6 +35,10 @@ public class VacanteServiceJPA implements IVacanteService {
                 new IllegalArgumentException("Vacante no encontrado con el ID: " + id));
     }
 
+    public List<Vacante> getAll() {
+        return vacanteRepository.findAll(); // ✅ Corregido
+    }
+
     @Override
     @Transactional
     public Vacante save(Vacante vacante) throws Exception {
@@ -121,6 +125,14 @@ public class VacanteServiceJPA implements IVacanteService {
         if (vacante != null) {
             vacanteRepository.deleteById(id);
         }
+    }
+
+    public Vacante cambiarEstado(Long id, boolean activo) {
+        Vacante vacante = vacanteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró la vacante con ID: " + id));
+
+        vacante.setActivo(activo);
+        return vacanteRepository.save(vacante);
     }
 
     // METODOS DE BUSQUEDA
