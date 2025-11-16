@@ -50,6 +50,19 @@ public class VacanteController {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Map<String, Object> params) {
+        try {
+            Vacante v = vacanteServiceJPA.findById(id);
+            Vacante vacanteUpdated = vacanteServiceJPA.update(v, params);
+            return ResponseEntity.status(HttpStatus.CREATED).body(vacanteUpdated);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: UPDATE");
+        }
+    }
+
     @GetMapping
     public ResponseEntity<?> getAll() {
         try {
