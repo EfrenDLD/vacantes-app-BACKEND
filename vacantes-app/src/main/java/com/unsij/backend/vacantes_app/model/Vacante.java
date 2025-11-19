@@ -9,9 +9,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Data
+@ToString(exclude = "usuario")
 @Entity
 @Table(name = "vacante")
 public class Vacante {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
