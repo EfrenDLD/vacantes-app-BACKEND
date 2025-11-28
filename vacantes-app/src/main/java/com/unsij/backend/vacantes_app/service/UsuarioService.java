@@ -7,6 +7,7 @@ import com.unsij.backend.vacantes_app.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,5 +42,9 @@ public class UsuarioService {
 
         // Usuario no encontrado
         return Optional.empty();
+    }
+
+    public List<Usuario> getAll() {
+        return usuarioRepository.findAll();
     }
 }
