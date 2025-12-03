@@ -3,6 +3,8 @@ SELECT 1;
 INSERT INTO usuario (nombre, email, username, contrasenia, perfil, estatus)
 VALUES ('Usuario de Prueba', 'usuario@prueba.com', 'usuario1', '123456', 'ADMIN', 'ACTIVO');
 
+INSERT INTO usuario (nombre, email, username, contrasenia, perfil, estatus)
+VALUES ('Luis Hernández', 'luis.hernandez@example.com', 'luisH', 'password123', 'USUARIO', 'ACTIVO');
 
 SELECT 1;
 INSERT INTO vacante (fecha_publicacion, nombre, descripcion, detalle, activo, id_usuario)
