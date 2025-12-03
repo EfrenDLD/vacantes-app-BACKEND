@@ -1,7 +1,9 @@
 package com.unsij.backend.vacantes_app.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import com.unsij.backend.vacantes_app.model.Vacante;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +13,7 @@ import com.unsij.backend.vacantes_app.service.UsuarioService;
 
 @RestController
 @RequestMapping("/usuarios")
-@CrossOrigin(origins = "*") 
+@CrossOrigin(origins = "*")
 public class UsuarioController {
 
     private final UsuarioService usuarioService;
@@ -36,6 +38,7 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: DELETE");
         }
     }
+
     @PostMapping
     public ResponseEntity<?> create(@RequestBody Usuario usuario) {
         try {
@@ -50,6 +53,19 @@ public class UsuarioController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body("Error al crear usuario: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Map<String, Object> params) {
+        try {
+            Usuario user = usuarioService.findById(id);
+            Usuario userUpdated = usuarioService.update(user, params);
+            return ResponseEntity.status(HttpStatus.CREATED).body(userUpdated);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: UPDATE");
         }
     }
 
