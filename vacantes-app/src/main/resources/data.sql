@@ -1,7 +1,7 @@
 SELECT 1;
 
 INSERT INTO usuario (nombre, email, username, contrasenia, perfil, estatus)
-VALUES ('Usuario de Prueba', 'usuario@prueba.com', 'usuario1', '123456', 'ADMIN', 'ACTIVO');
+VALUES ('Usuario de Prueba', 'usuario@prueba.com', 'usuario1', '$2a$10$TmttNotQS2EcOIRqqs6nB.v6.Ldj4w9g.Sk2OkuPXImIU73TeJlym', 'ADMIN', 'ACTIVO');
 
 
 SELECT 1;

@@ -8,6 +8,7 @@ import com.unsij.backend.vacantes_app.repository.UsuarioRepository;
 import com.unsij.backend.vacantes_app.service.interfaces.IUsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,25 +27,27 @@ public class UsuarioService implements IUsuarioService {
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
 
-            // Validar contraseña
-            if (!usuario.getContrasenia().equals(loginRequest.getPassword())) {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+            // Validar contraseña encriptada
+            if (!encoder.matches(loginRequest.getPassword(), usuario.getContrasenia())) {
                 return Optional.empty();
             }
 
-            // Validar que el usuario sea administrador
-            if (!"ADMIN".equalsIgnoreCase(usuario.getPerfil())) { // Cambia "ADMIN" si tu valor es distinto
+            // Validar rol
+            if (!"ADMIN".equalsIgnoreCase(usuario.getPerfil())) {
                 return Optional.empty();
             }
 
-            // Armar respuesta
+            // Crear respuesta
             LoginResponseDTO response = new LoginResponseDTO();
             response.setMensaje("Login exitoso");
             response.setUsername(usuario.getUsername());
             response.setPerfil(usuario.getPerfil());
+
             return Optional.of(response);
         }
 
-        // Usuario no encontrado
         return Optional.empty();
     }
 
@@ -73,10 +76,27 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public Usuario save(Usuario usuario) throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
+    public Usuario save(Usuario usuario) {
+
+        try {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+            // Encriptar contraseña
+            usuario.setContrasenia(encoder.encode(usuario.getContrasenia()));
+
+            // Dejar vacantes en null como mencionaste
+            usuario.setVacantes(null);
+
+            System.out.println("Guardando usuario: " + usuario.getUsername());
+
+            return usuarioRepository.save(usuario);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error guardando usuario: " + e.getMessage());
+        }
     }
+
 
     @Override
     public Usuario create(Map<String, Object> params) throws Exception {

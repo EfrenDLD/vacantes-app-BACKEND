@@ -36,4 +36,22 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor: DELETE");
         }
     }
+    @PostMapping
+    public ResponseEntity<?> create(@RequestBody Usuario usuario) {
+        try {
+            System.out.println("📥 Controller: Usuario recibido para crear: " + usuario.getUsername());
+
+            Usuario nuevo = usuarioService.save(usuario);
+
+            System.out.println("✅ Controller: Usuario creado con ID: " + nuevo.getId());
+
+            return ResponseEntity.ok(nuevo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Error al crear usuario: " + e.getMessage());
+        }
+    }
+
+
 }
