@@ -21,6 +21,15 @@ public class UsuarioService implements IUsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    /**
+     * Servicio para procesar login.
+     * Valida usuario, contraseña y perfil.
+     * 
+     * FUTURA MEJORA:
+     * - Implementar JWT para sesiones seguras.
+     * - Registrar intentos fallidos de login.
+     * - Añadir bitácora de accesos.
+     */
     public Optional<LoginResponseDTO> login(LoginRequestDTO loginRequest) {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByUsername(loginRequest.getUsername());
 
@@ -51,6 +60,13 @@ public class UsuarioService implements IUsuarioService {
         return Optional.empty();
     }
 
+    /**
+     * Obtiene lista completa de usuarios.
+     *
+     * FUTURA MEJORA:
+     * - Implementar paginación.
+     * - Añadir filtros por rol, estatus o nombre.
+     */
     public List<Usuario> getAll() {
         return usuarioRepository.findAll();
     }
@@ -71,10 +87,19 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public List<Usuario> findAll() {
-        // TODO Auto-generated method stub
+        // Método no implementado aún.
+        // FUTURA MEJORA: reemplazar por paginación o búsqueda avanzada.
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
 
+    /**
+     * Crea un nuevo usuario.
+     *
+     * FUTURA MEJORA:
+     * - Validar si el username ya existe antes de guardar.
+     * - Enviar correo de bienvenida.
+     * - Registrar fecha de creación y actualización.
+     */
     @Override
     public Usuario save(Usuario usuario) {
 
@@ -84,7 +109,7 @@ public class UsuarioService implements IUsuarioService {
             // Encriptar contraseña
             usuario.setContrasenia(encoder.encode(usuario.getContrasenia()));
 
-            // Dejar vacantes en null como mencionaste
+            // No asignar vacantes desde aquí
             usuario.setVacantes(null);
 
             System.out.println("Guardando usuario: " + usuario.getUsername());
@@ -97,13 +122,21 @@ public class UsuarioService implements IUsuarioService {
         }
     }
 
-
     @Override
     public Usuario create(Map<String, Object> params) throws Exception {
-        // TODO Auto-generated method stub
+        // Este método está pendiente.
+        // FUTURA MEJORA: construir un usuario desde el Map y guardarlo.
         throw new UnsupportedOperationException("Unimplemented method 'create'");
     }
 
+    /**
+     * Actualiza campos de un usuario existente.
+     *
+     * FUTURA MEJORA:
+     * - Registrar auditoría de cambios.
+     * - Validar cambios no permitidos según el rol.
+     * - Evitar cambiar username si está enlazado a otros módulos.
+     */
     @Override
     public Usuario update(Usuario usuario, Map<String, Object> params) throws Exception {
         try {
@@ -117,6 +150,14 @@ public class UsuarioService implements IUsuarioService {
         return usuarioRepository.save(usuario);
     }
 
+    /**
+     * Construye el objeto usuario a partir de los parámetros recibidos.
+     * Solo actualiza los campos permitidos.
+     *
+     * FUTURA MEJORA:
+     * - Añadir validaciones (correo válido, username sin espacios, etc.).
+     * - Registrar intentos de cambio de contraseña.
+     */
     @Override
     public Usuario build(Map<String, Object> params, Usuario usuario) throws IllegalArgumentException {
         try {
@@ -141,7 +182,7 @@ public class UsuarioService implements IUsuarioService {
                 usuario.setContrasenia(encoder.encode(contrasenia));
             }
 
-            // No actualizar vacantes aquí, solo los campos básicos
+            // No actualizar vacantes dentro de este método
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -152,7 +193,8 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario updateInstance(Usuario usuario) throws Exception {
-        // TODO Auto-generated method stub
+        // Método pendiente.
+        // FUTURA MEJORA: actualizar usuario sin Map, solo con entidad completa.
         throw new UnsupportedOperationException("Unimplemented method 'updateInstance'");
     }
 }
